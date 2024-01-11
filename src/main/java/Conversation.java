@@ -1,4 +1,5 @@
 import java.time.Duration;
+import java.util.List;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -11,7 +12,7 @@ public class Conversation {
 	
     public static void main(String[] args) throws InterruptedException {
         WebDriver driver = new FirefoxDriver();
-        driver.get("https://chataigpt.org/?utm_content=cmp-true");
+        driver.get("https://chat.openai.com");
         
         // Accept the terms and conditions
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
@@ -22,14 +23,15 @@ public class Conversation {
         WebElement textarea = driver.findElement(By.className("wpaicg-chat-shortcode-typing"));
         textarea.sendKeys(firstPrompt);
         
-        // Click the submit prompt button
-        Thread.sleep(3);
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("document.getElementsByClassName('wpaicg-chat-shortcode-send')[0].scrollIntoView();");
-        js.executeScript("window.scrollBy(0, -200);");
-        Thread.sleep(3);
-        WebElement submitButton = driver.findElement(By.className("wpaicg-chat-shortcode-send"));
-        submitButton.click();
+        // Submit the prompt
+        Thread.sleep(5000);
+        textarea.sendKeys(Keys.ENTER);
+        
+        // 
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("wpaicg-bot-thinking")));
+        Thread.sleep(10000);
+        List<WebElement> messages = driver.findElements(By.className("wpaicg-chat-message"));
+        System.out.println(messages.get(messages.size()-1).getAttribute("innerHTML"));
         
         //driver.quit();
     }
