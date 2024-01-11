@@ -1,38 +1,47 @@
-import java.time.Duration;
 import java.util.List;
-
+import java.util.Scanner;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.*;
 
 public class Conversation {
 	
-	private static String firstPrompt = "lets have a conversation, dont let the conversation die, if you sense its about to die ask me a question to keep it going, start with the most random topic and make your responses no more than a paragraph long";
+	private static String firstPrompt = "Lets have a conversation, don't let the conversation die, if you sense its about to die ask me a question to keep it going, start with the most random topic and make your responses no more than a paragraph long";
 	
-    public static void main(String[] args) throws InterruptedException {
-        WebDriver driver = new FirefoxDriver();
+	public static void startConversation() {
+		// Create FirefoxOptions and set the profile
+        ProfilesIni profileIni = new ProfilesIni();
+        FirefoxProfile profile = profileIni.getProfile("selenium");
+        FirefoxOptions options = new FirefoxOptions();
+        options.setProfile(profile);
+        options.addArguments("-headless");
+
+        // Go to the ChatGPT website
+        WebDriver driver = new FirefoxDriver(options);
         driver.get("https://chat.openai.com");
         
-        // Accept the terms and conditions
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
-        WebElement acceptButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("ez-accept-all")));
-        acceptButton.click();
+        // Start the conversation by asking the first prompt.
+        System.out.println("AI: " + askChatGPT(firstPrompt, driver) + "\n");
         
-        // Type in the conversation starting prompt
-        WebElement textarea = driver.findElement(By.className("wpaicg-chat-shortcode-typing"));
-        textarea.sendKeys(firstPrompt);
+        // Allow the user to respond and continue the conversation
+        while (true) {
+        	Scanner scanner = new Scanner(System.in);
+        	System.out.print("You: ");
+            String userResponse = scanner.nextLine();
+            System.out.println("\nAI: " + askChatGPT(userResponse, driver) + "\n");
+        }
+	}
+	
+	private static String askChatGPT(String prompt, WebDriver driver) {
+		// Submit the prompt
+        WebElement textarea = driver.findElement(By.id("prompt-textarea"));
+        textarea.sendKeys(prompt + Keys.ENTER);
         
-        // Submit the prompt
-        Thread.sleep(5000);
-        textarea.sendKeys(Keys.ENTER);
-        
-        // 
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("wpaicg-bot-thinking")));
-        Thread.sleep(10000);
-        List<WebElement> messages = driver.findElements(By.className("wpaicg-chat-message"));
-        System.out.println(messages.get(messages.size()-1).getAttribute("innerHTML"));
-        
-        //driver.quit();
-    }
+        // Grab and return ChatGPT's response
+        try {Thread.sleep(5000);} catch (InterruptedException e) {e.printStackTrace();}
+        List<WebElement> messages = driver.findElements(By.className("markdown"));
+        String response = messages.get(messages.size() - 1).getAttribute("innerText");
+		return response;
+	}
 }
