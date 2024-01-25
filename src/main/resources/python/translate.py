@@ -28,7 +28,7 @@ def informalizeTranslatedText(text):
     text = text.replace("Hey Bruder, ", "")
     text = text.replace("Hallo Bruder, ", "")
     sentences = re.split(r'(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?|\!)\s', text)
-    greetings = [sentence.capitalize() for sentence in sentences]
+    greetings = [sentence.capitalize()[0] + sentence[1:] for sentence in sentences]
     text = ' '.join(greetings)
     return text
 

@@ -47,7 +47,7 @@ public class HelperMethods {
 
 		/* Creating a dictionary using HashMap
         Map<String, String> dictionary = new HashMap<>();
-
+		
         // Adding key-value pairs to the dictionary
         dictionary.put("ben sie ", "st du ");
         dictionary.put("ben sie sich ", "st du dich ");

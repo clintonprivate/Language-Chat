@@ -3,6 +3,9 @@
  */
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import javax.swing.*;
 
 public class App {
@@ -21,7 +24,25 @@ public class App {
 		answerSpace.setFont(font2);
 		answerSpace.setLineWrap(true);
 		answerSpace.setWrapStyleWord(true);
+		answerSpace.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    System.out.println("Enter key pressed!");
+                }
+            }
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        });
 		f.add(answerSpace);
+		
+		// Create first message box
+		MessageBubble firstMessage = new MessageBubble("Please wait...", "ai");
+		f.add(firstMessage);
 		
         // Adjust window settings
 		f.setLayout(null);
@@ -29,18 +50,10 @@ public class App {
 		f.setLocationRelativeTo(null);
 		f.setVisible(true);
 		
-		// Create first message box
-		JLabel personalQuestion = new JLabel("Was ist eine deiner stolzesten Errungenschaften oder Momente in deinem Leben bisher?");
-		personalQuestion.setBounds(20, 20, 1000, 50);
-		Font font = new Font("Arial", Font.BOLD, 20);
-		personalQuestion.setFont(font);
-		personalQuestion.setOpaque(true);
-		personalQuestion.setForeground(Color.white);
-		personalQuestion.setBackground(Color.blue);
-		f.add(personalQuestion);
-		
-		// Start conversation
+		// Begin the conversation
 		Conversation conversation = new Conversation();
-		conversation.startConversation();
+		String introduction = conversation.introduction;
+		firstMessage.setText(introduction);
+		//conversation.startConversation();
 	}
 }
