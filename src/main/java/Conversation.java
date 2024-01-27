@@ -15,7 +15,7 @@ public class Conversation {
 	private static HelperMethods helperMethods = new HelperMethods();
 	private static Grammar grammar = new Grammar();
 	private static String firstPrompt = "Lets have a conversation, dont let the conversation die, if you sense its about to die ask me a question to keep it going, make your responses no more than a paragraph long, start by asking me what topic i would like to talk about today and pretend that your name is " + aiName + ", also use a lot of emojis to keep the conversation fun";
-	static String introduction = "Hallo! Ich bin " + aiName + ", dein Sprachlern-Buddy! 🌟 Wir können über alles plaudern und gemeinsam dein Grammatik verbessern. Worüber möchtest du denn heute quatschen? 🗣️✨";
+	static String introduction = "Worüber wollen wir reden? 🗣️✨";
 	private static String prompt = firstPrompt;
 	private static WebDriver driver;
 	

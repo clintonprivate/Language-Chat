@@ -17,32 +17,17 @@ public class App {
 		f.setSize(500,400);
 		f.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		
-		// User answer space
-		JTextArea answerSpace = new JTextArea();
-		answerSpace.setBounds(20, 590, 1230, 40);
-		Font font2 = new Font("Arial", Font.BOLD, 18);
-		answerSpace.setFont(font2);
-		answerSpace.setLineWrap(true);
-		answerSpace.setWrapStyleWord(true);
-		answerSpace.addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    System.out.println("Enter key pressed!");
-                }
-            }
-            @Override
-            public void keyReleased(KeyEvent e) {
-            }
-        });
-		f.add(answerSpace);
+		// Set the window color
+        Color backgroundColor = new Color(240, 188, 60);
+        f.getContentPane().setBackground(backgroundColor);
 		
 		// Create first message box
-		MessageBubble firstMessage = new MessageBubble("Please wait...", "ai");
+		MessageBubble firstMessage = new MessageBubble("Please wait...");
 		f.add(firstMessage);
+		
+		// User answer space
+		MessageInputBar messageInputBar = new MessageInputBar();
+		f.add(messageInputBar);
 		
         // Adjust window settings
 		f.setLayout(null);
@@ -53,7 +38,7 @@ public class App {
 		// Begin the conversation
 		Conversation conversation = new Conversation();
 		String introduction = conversation.introduction;
-		firstMessage.setText(introduction);
+		//firstMessage.setText(introduction);
 		//conversation.startConversation();
 	}
 }
